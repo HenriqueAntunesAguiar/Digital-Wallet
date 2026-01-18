@@ -6,19 +6,21 @@ class NewTransaction():
             '2b':100.00
         }
 
+        self.log = []
+
     def TransactionValue(self, client_id_to_recive:str, client_id_to_discount:str, value_of_transaction:float):
         
         client_to_recive_current_balance = self.GetFakerBalance(client_id_to_recive)
         client_to_discount_current_balance = self.GetFakerBalance(client_id_to_discount)
 
-        if self.ValidateTransactionAboutValueDiscount(client_to_discount_current_balance):
+        if self.ValidateTransactionAboutValueDiscount(client_to_discount_current_balance, value_of_transaction):
             self.MakeTransaction(client_id_to_recive, client_to_recive_current_balance, client_id_to_discount, client_to_discount_current_balance, value_of_transaction)
             return 'Success: The operation did normaly.'
         else:
             return 'Error: No balance to make a transaction.'
 
 
-    def ValidateTransactionAboutValueDiscount(current_value:float, value_to_discount:float):
+    def ValidateTransactionAboutValueDiscount(self, current_value:float, value_to_discount:float):
 
         if (current_value - value_to_discount) < 0:
             return False
@@ -35,6 +37,8 @@ class NewTransaction():
 
         self.UpdateFakerBalance(client_id_to_recive, new_balance_of_client_to_recive)
         self.UpdateFakerBalance(client_id_to_discount, new_balance_of_client_to_discount)
+    
+
     
     def UpdateFakerBalance(self, client_id:str, new_value_of_balance:float):
 

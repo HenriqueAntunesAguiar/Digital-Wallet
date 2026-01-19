@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from app.models import Wallet
-from scripts.transaction import Transaction
+from app.scripts.transaction import Transaction
 
 if list(Wallet.objects.all().values()) == []:
     for i in range(0,2):

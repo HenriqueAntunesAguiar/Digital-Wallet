@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from app.models import Wallet
 from app.scripts.transaction import Transaction
+from app.scripts.limits import ApplicationService
 
 if list(Wallet.objects.all().values()) == []:
     for i in range(0,2):
@@ -21,5 +22,19 @@ def WalletController(request):
         break
 
     obj = list(Wallet.objects.filter(wallet_id__in=[wallet_id_to_debit, wallet_id_to_credit]).values())
+    application_limits = ApplicationService(wallet_id=wallet_id_to_debit)
 
-    Transaction(obj=obj, amount_of_transaction=amount_of_transaction)
+    try:
+        
+        application_limits.GetDatasOfWallet(amount_of_transaction)
+        Transaction(obj=obj, amount_of_transaction=amount_of_transaction)
+        application_limits.UpdateUsedLimits(amount_of_transaction)
+    
+    except Exception as e:
+        
+        return str(e)
+    
+def WalletExtract(request):
+
+
+    return

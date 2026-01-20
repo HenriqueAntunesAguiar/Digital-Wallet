@@ -19,4 +19,14 @@ class TransactionLogs(models.Model):
     status = models.CharField(choices=[('PENDING','PENDING'), ('COMPLETED','COMPLETED'), ('FAILED','FAILED')], default='PENDING')
     timestamp = models.TimeField(auto_now_add=True)
 
-
+class WalletLimits(models.Model):
+    wallet_id = models.ForeignKey(
+        Wallet,
+        to_field='wallet_id',
+        on_delete=models.CASCADE,
+        related_name='wallet_limits'
+    )
+    daily_limit = models.FloatField()
+    daily_limit_used = models.FloatField()
+    monthly_limit = models.FloatField()
+    monthly_limit_used = models.FloatField()

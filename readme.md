@@ -71,7 +71,7 @@ Consome eventos do Wallet
 
 🟣 3. Limits
 
-Responsabilidade
+# Responsabilidade
 
 Controlar limites de gasto
 
@@ -79,7 +79,7 @@ Validar se uma operação é permitida
 
 Evoluir regras sem impactar Wallet
 
-Regras
+# Regras
 
 Limite diário/mensal
 
@@ -87,11 +87,11 @@ Limites independentes do saldo
 
 Deve responder rapidamente
 
-📌 Esse serviço NÃO deve conhecer o Wallet internamente
+# 📌 Esse serviço NÃO deve conhecer o Wallet internamente
 
 🟣 4. Statements (somente leitura)
 
-Responsabilidade
+# Responsabilidade
 
 Gerar extratos
 
@@ -99,7 +99,7 @@ Consolidar dados
 
 Otimizado para leitura
 
-Regras
+# Regras
 
 Event-driven
 

@@ -1,14 +1,14 @@
-from app.scripts.wallet import ApplicationService
+from app.scripts.wallet_application_service import WalletApplicationService
 from app.models import TransactionLogs
 
 class Transaction:
-    def __init__(self, obj, amount_of_transaction):
-        self.amount_of_transaction = amount_of_transaction
+    def __init__(self, debit_wallet, debit_wallet_balance, credit_wallet, credit_wallet_balance,  amount_of_transaction):
 
-        self.debit_wallet = obj[0]['wallet_id']
-        self.debit_wallet_balance = obj[0]['balance']
-        self.credit_wallet = obj[1]['wallet_id']
-        self.credit_wallet_balance = obj[1]['balance']
+        self.amount_of_transaction = amount_of_transaction
+        self.debit_wallet = debit_wallet
+        self.debit_wallet_balance = debit_wallet_balance
+        self.credit_wallet = credit_wallet
+        self.credit_wallet_balance = credit_wallet_balance
 
     def MakeTransaction(self):
 
@@ -19,7 +19,7 @@ class Transaction:
                                     status="PENDING"
                                 )
         transaction.save()
-        wallet_app = ApplicationService(
+        wallet_app = WalletApplicationService(
                                     debit_wallet=self.debit_wallet,
                                     debit_wallet_balance=self.debit_wallet_balance,
                                     credit_wallet=self.credit_wallet, 
@@ -33,5 +33,3 @@ class Transaction:
         except:
             transaction.status = "FAILED"
             transaction.save()
-
-        

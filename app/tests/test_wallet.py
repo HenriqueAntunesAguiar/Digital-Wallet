@@ -1,5 +1,5 @@
 import pytest 
-from app.scripts.wallet import Wallet
+from app.scripts.wallet import Wallet, ApplicationService
 
 def test_credit_adds_balance_and_event():
     wallet = Wallet("wallet-1", 100)
@@ -39,3 +39,26 @@ def test_pull_events_clears_event_list():
 
     assert len(events) == 1
     assert wallet.pull_events() == []
+
+def test_execute_generates_debit_and_credit_events():
+    service = ApplicationService(
+        debit_wallet="wallet-debit",
+        debit_wallet_balance=100,
+        credit_wallet="wallet-credit",
+        credit_wallet_balance=50
+    )
+
+    events = service.execute(30)
+
+    assert len(events) == 2
+
+    debit_event = events[0]
+    credit_event = events[1]
+
+    assert debit_event["type"] == "WalletDebited"
+    assert debit_event["wallet_id"] == "wallet-debit"
+    assert debit_event["amount"] == 30
+
+    assert credit_event["type"] == "WalletCredited"
+    assert credit_event["wallet_id"] == "wallet-credit"
+    assert credit_event["amount"] == 30

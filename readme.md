@@ -26,7 +26,13 @@ Uma fintech precisa oferecer uma carteira digital que suporte:
 - consistência entre múltiplos serviços
 - escalabilidade e desacoplamento
 
-Esse problema é intencionalmente modelado como múltiplos serviços independentes, cada um sendo dono de uma parte específica do domínio.
+Esse problema é intencionalmente modelado como múltiplos serviços independentes, cada um sendo dono de uma parte específica do domínio. 
+
+Cada microsserviço foi separado por pastas dentro do mesmo repositório com o objetivo de facilitar a visualização do todo e a análise arquitetural.
+
+Em um cenário mais próximo de produção, esses serviços poderiam ser extraídos para repositórios independentes, cada um com seu próprio Dockerfile, permitindo versionamento, deploy e escalabilidade isolados.
+
+A infraestrutura poderia ser composta por containers orquestrados via Docker Compose (ou Kubernetes), incluindo um API Gateway como ponto de entrada, balanceamento de carga entre instâncias e ferramentas de observabilidade e métricas, como Prometheus.
 
 ## Objetivos Arquiteturais
 

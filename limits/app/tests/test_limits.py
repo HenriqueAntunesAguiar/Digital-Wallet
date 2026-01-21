@@ -1,4 +1,4 @@
-from limits.app.scripts.limits import Limits
+from app.scripts.limits import Limits
 import pytest
 
 def test_daily_limit_exceeded():

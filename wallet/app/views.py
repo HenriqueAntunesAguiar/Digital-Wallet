@@ -1,35 +1,48 @@
 from django.shortcuts import render
-from app.models import WalletModel
 import json
 from django.http import JsonResponse
-from app.scripts.wallet_application_service import WalletApplicationService
+from wallet.app.scripts.application.wallet_application_service import WalletApplicationService
+from wallet.app.scripts.domain.repositories.wallet_repository import WalletDb
+from wallet.app.scripts.infra.events import WalletKafka
 
 def WalletController(request):
     
     if request.method == 'POST':
         body = json.loads(request.body)
 
-        wallet_to_debit = body.get('wallet_id_to_debit')
+        wallet_id_to_debit = body.get('wallet_id_to_debit')
         wallet_id_to_credit = body.get('wallet_id_to_credit')
         amount = body.get('amount')
         transaction_uuid = body.get('transaction_uuid')
-    model = list(Wallet.objects.filter(wallet_id__in=[wallet_to_debit, wallet_id_to_credit]).values())
+    
+    wallet_db = WalletDb()
+    wallet_to_credit_balance = wallet_db.get_wallet(wallet_id=wallet_id_to_credit).balance
+    wallet_to_debit_balance = wallet_db.get_wallet(wallet_id=wallet_id_to_credit).balance
 
-    for line in model:
+    wallet_response = WalletApplicationService(
 
-        if line['wallet_id'] == wallet_to_debit:
-            wallet_to_debit_balance = line['balance']    
-        else:
-            wallet_to_credit_balance = line['balance']    
-
-    wallet_response = WalletApplicationService(wallet_to_debit=wallet_to_debit,
-                            wallet_to_debit_balance=wallet_to_debit_balance,
-                            wallet_to_credit=wallet_id_to_credit,
-                            wallet_to_credit_balance=wallet_to_credit_balance,
-                            transaction_uuid=transaction_uuid).execute(amount)
-    if wallet_response['status'] == 'success':
-        return JsonResponse({'events':wallet_response['events']}, status=200)
+        wallet_to_debit=wallet_id_to_debit,
+        wallet_to_debit_balance=wallet_to_debit_balance,
+        wallet_to_credit=wallet_id_to_credit,
+        wallet_to_credit_balance=wallet_to_credit_balance,
+        transaction_uuid=transaction_uuid
+        
+        ).execute(amount)
+    
+    if type(wallet_response) == dict:
+        kafka = WalletKafka()
+        kafka.send_failed_event(wallet_response['type'], wallet_response['error'])
     
     else:
-        return JsonResponse({'error':wallet_response['error']}, status=200)
+
+        kafka = WalletKafka()
+
+        for event in wallet_response:
+
+            kafka.send_successfull_event(
+                _type=event['type'],
+                wallet_id=event['wallet_id'], 
+                amount=event['amount'], 
+                new_balance=event['new_balance']
+            )
     

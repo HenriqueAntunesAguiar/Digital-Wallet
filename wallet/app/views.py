@@ -29,18 +29,28 @@ def WalletController(request):
         
         ).execute(amount)
     
-    if type(wallet_response) == dict:
-        kafka = WalletKafka()
-        kafka.send_failed_event(wallet_response['type'], wallet_response['error'])
-    
-    else:
+    kafka = WalletKafka()
 
-        kafka = WalletKafka()
+    try:
+        if wallet_response['error']:
+        
+            for event in wallet_response:
+
+                kafka.send_failed_event(
+                    type=event['type'],
+                    transaction_uuid=event['transaction_uuid'],
+                    wallet_id=event['wallet_id'],
+                    amount=event['amount'],
+                    error=event['error']
+                )
+    
+    except:
 
         for event in wallet_response:
 
             kafka.send_successfull_event(
                 _type=event['type'],
+                transaction_uuid=event['transaction_uuid'],
                 wallet_id=event['wallet_id'], 
                 amount=event['amount'], 
                 new_balance=event['new_balance']

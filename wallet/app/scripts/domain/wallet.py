@@ -8,6 +8,13 @@ class Wallet:
 
     def debit(self, amount: float):
         if self.balance < amount:
+            self._events.append({
+                "type": "WalletDebited",
+                "wallet_id": self.wallet_id,
+                "transaction_uuid":self.transaction_uuid, 
+                "amount": amount,
+                "error": "Insufficient funds"
+            })
             raise Exception("Insufficient funds")
 
         self.balance -= amount

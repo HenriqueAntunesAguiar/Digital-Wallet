@@ -19,5 +19,9 @@ class WalletApplicationService:
             return events
                 
         except Exception as e:
-            return {'type':'WalletFailed','error':str(e)}
+
+            print(e)
+            
+            events = (self.debit_wallet.pull_events() + self.credit_wallet.pull_events())
+            return events
            

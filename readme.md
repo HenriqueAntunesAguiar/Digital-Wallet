@@ -1,5 +1,3 @@
-(br)
-
 # 💳 Wallet – Sistema Distribuído de Carteira Digital (Arquitetura Hexagonal)
 
 ## Visão Geral

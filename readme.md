@@ -16,6 +16,10 @@ O objetivo não é entregar um sistema de carteira pronto para produção, mas s
   
 O foco está em limites claros, orquestração explícita e fluxo de eventos, e não em complexidade de infraestrutura.
 
+## Fluxo do Processo
+
+![Fluxo do processo](docs/fluxograma-digital-wallet.png)
+
 ## Contexto do Problema
 
 Uma fintech precisa oferecer uma carteira digital que suporte:

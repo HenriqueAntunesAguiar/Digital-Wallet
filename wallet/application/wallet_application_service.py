@@ -1,5 +1,4 @@
-from wallet.app.scripts.domain.wallet import Wallet
-from wallet.app.scripts.infra.events import WalletKafka
+from wallet.domain.wallet import Wallet
 
 class WalletApplicationService:
 

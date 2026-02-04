@@ -29,6 +29,16 @@ services:
       timeout: 5s
       retries: 10
 
+  kafka-bootstrap:
+  image: confluentinc/cp-kafka:7.5.0
+  depends_on:
+    kafka:
+      condition: service_healthy
+  volumes:
+    - ./infra/kafka:/infra/kafka
+  command: >
+    bash /kafka/kafka-bootstrap.sh
+    
   mysql:
     image: mysql:8.0
     container_name: mysql

@@ -23,6 +23,11 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
 
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   mysql:
     image: mysql:8.0
@@ -30,18 +35,25 @@ services:
     restart: always
     ports:
       - '3307:3306' 
-    
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: app_db
       MYSQL_USER: app_user
       MYSQL_PASSWORD: app_pass
-
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
 
   client-hub:
     image: hantunesaguiar/digital_wallet_client_hub:1.0
+    depends_on:
+      - mysql
+      - kafka
     command: >
       sh c "
       python manege.py migrate &&

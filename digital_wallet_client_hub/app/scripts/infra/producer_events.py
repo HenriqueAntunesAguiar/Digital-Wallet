@@ -19,7 +19,7 @@ class KafkaClientHubProducer:
             'transaction_uuid':event['transaction_uuid'],
             'wallet_id_to_debit':event['wallet_id_to_debit'],
             'wallet_id_to_credit':event['wallet_id_to_credit'],
-            'amount':event['amount'],
+            'amount':event['amount']
         })
         self.producer.produce(topic='transaction_requested',
                               value=event,

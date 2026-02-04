@@ -52,15 +52,17 @@ services:
   client-hub:
     image: hantunesaguiar/digital_wallet_client_hub:1.0
     depends_on:
-      - mysql
-      - kafka
+      mysql:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
     command: >
-      sh c "
+      sh -c "
       python manege.py migrate &&
       python manage.py runserver 0.0.0.0:8000
       "
     ports:
-      - "8000:5000"
+      - "8000:8000"
 
 volumes:
   mysql_data:

@@ -25,10 +25,10 @@ def MakeTransaction(request):
         
         transaction_uuid = uuid.uuid4()
         msg = {
-            'wallet_id_do_debit':wallet_id_to_debit,
+            'wallet_id_to_debit':wallet_id_to_debit,
             'wallet_id_to_credit':wallet_id_to_credit,
             'amount':amount,
-            'transaction_uuid':transaction_uuid
+            'transaction_uuid':str(transaction_uuid)
 
         }
         kafka_producer = KafkaClientHubProducer()

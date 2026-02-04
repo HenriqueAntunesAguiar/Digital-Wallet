@@ -42,7 +42,13 @@ services:
 
   client-hub:
     image: hantunesaguiar/digital_wallet_client_hub:1.0
+    command: >
+      sh c "
+      python manege.py migrate &&
+      python manage.py runserver 0.0.0.0:8000
+      "
+    ports:
+      - "8000:5000"
 
-    
 volumes:
   mysql_data:

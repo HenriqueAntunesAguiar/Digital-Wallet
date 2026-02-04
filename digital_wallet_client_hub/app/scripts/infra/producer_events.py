@@ -1,26 +1,25 @@
 from confluent_kafka import Producer
 import json
 
-class KafkaWalletInterface:
+class KafkaClientHubProducer:
 
     def __init__(self):
-        conf={'bootstrap.server':'localhost:9092'}
+        conf={'bootstrap.server':'kafka:9092'}
         self.producer = Producer(conf)
 
-    def callback_delivery(err, msg):
+    def callback_delivery(self, err, msg):
 
         if err:
             print(f'Erro ao entregar: {err}')
         else:
             print(f'Mensagem entregue em {msg.topic()} [{msg.partition()}]')
 
-    def send_successfull_event(self, _type, transaction_uuid, wallet_id_to_debit, wallet_id_to_credit, amount):
+    def send_successfull_event(self, event):
         event = json.dumps({
-            'type':_type,
-            'transaction_uuid':transaction_uuid,
-            'wallet_id_to_debit':wallet_id_to_debit,
-            'wallet_id_to_credit':wallet_id_to_credit,
-            'amount':amount,
+            'transaction_uuid':event['transaction_uuid'],
+            'wallet_id_to_debit':event['wallet_id_to_debit'],
+            'wallet_id_to_credit':event['wallet_id_to_credit'],
+            'amount':event['amount'],
         })
         self.producer.produce(topic='transaction_requested',
                               value=event,

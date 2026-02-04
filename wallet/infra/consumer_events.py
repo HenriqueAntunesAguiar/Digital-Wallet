@@ -2,12 +2,12 @@
 # KAFKA FILE CONFIG
 from confluent_kafka import Consumer
 import json
-from wallet.controller.controller_aplication import Controller
+from controller.controller_aplication import Controller
 
 class KafkaWalletConsumer:
 
     def __init__(self):
-        conf = {'bootstrap.servers':'localhost:9092',
+        conf = {'bootstrap.servers':'kafka:29092',
                 'group.id':'wallet-service',
                 'auto.offset.reset':'earliest'}
         self.consumer = Consumer(conf)

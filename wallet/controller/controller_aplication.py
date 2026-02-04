@@ -1,5 +1,5 @@
-from wallet.domain.repositories.wallet_repository import WalletDb
-from wallet.application.wallet_application_service import WalletApplicationService
+from domain.repositories.wallet_repository import WalletDb
+from application.wallet_application_service import WalletApplicationService
     
 class Controller:
     

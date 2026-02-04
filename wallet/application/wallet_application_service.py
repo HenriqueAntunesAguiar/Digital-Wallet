@@ -1,4 +1,4 @@
-from wallet.domain.wallet import Wallet
+from domain.wallet import Wallet
 
 class WalletApplicationService:
 

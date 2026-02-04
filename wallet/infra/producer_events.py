@@ -6,7 +6,7 @@ import json
 class KafkaWalletProducer:
 
     def __init__(self):
-        conf = {'bootstrap.server':'localhost:9092'}
+        conf = {'bootstrap.servers':'kafka:29092'}
         self.producer = Producer(conf)
 
     def callback_delivery(err, msg):

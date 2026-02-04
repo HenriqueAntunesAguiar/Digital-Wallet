@@ -64,5 +64,13 @@ services:
     ports:
       - "8000:8000"
 
+  wallet-service:
+    image: hantunesaguiar/digital_wallet_wallet_service:1.0
+    depends_on:
+      client-hub:
+    command: >
+      sh -c "python -m infra.consumer_events"
+
+
 volumes:
   mysql_data:

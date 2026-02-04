@@ -4,7 +4,7 @@ import json
 class KafkaClientHubProducer:
 
     def __init__(self):
-        conf={'bootstrap.servers':'kafka:9092'}
+        conf={'bootstrap.servers':'kafka:29092'}
         self.producer = Producer(conf)
 
     def callback_delivery(self, err, msg):

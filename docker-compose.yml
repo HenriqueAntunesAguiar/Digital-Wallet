@@ -50,7 +50,7 @@ services:
     
 
   client-hub:
-    image: hantunesaguiar/digital_wallet_client_hub:1.1.2
+    image: hantunesaguiar/digital_wallet_client_hub:1.1.3
     depends_on:
       mysql:
         condition: service_healthy

@@ -1,5 +1,6 @@
 from wallet.domain.repositories.wallet_repository import WalletDb
 from wallet.application.wallet_application_service import WalletApplicationService
+    
 class Controller:
     
     def __init__(self, event):

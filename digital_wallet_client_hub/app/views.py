@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 import json
 import uuid
 from app.scripts.infra.producer_events import KafkaClientHubProducer
 
 # Create your views here.
+@csrf_exempt
 def MakeTransaction(request):
 
     if request.method == 'POST':
@@ -34,5 +37,5 @@ def MakeTransaction(request):
         return JsonResponse({'msg':'Solicitado com sucesso.'}, status=200)
     
     else:
-        
+
         return JsonResponse({'error':'Método não permitido'}, status=405)

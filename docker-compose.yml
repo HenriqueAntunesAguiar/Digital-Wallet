@@ -67,7 +67,7 @@ services:
   wallet-service:
     image: hantunesaguiar/digital_wallet_wallet_service:1.0
     depends_on:
-      client-hub:
+      - client-hub:
     command: >
       sh -c "python -m infra.consumer_events"
 

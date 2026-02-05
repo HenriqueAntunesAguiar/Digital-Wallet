@@ -30,14 +30,14 @@ services:
       retries: 10
 
   kafka-bootstrap:
-  image: confluentinc/cp-kafka:7.5.0
-  depends_on:
-    kafka:
-      condition: service_healthy
-  volumes:
-    - ./kafka:/infra/kafka
-  command: >
-    bash /infra/kafka/kafka-bootstrap.sh
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./kafka:/infra/kafka
+    command: >
+      bash /infra/kafka/kafka-bootstrap.sh
 
 
   mysql:

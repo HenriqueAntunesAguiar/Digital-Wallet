@@ -32,10 +32,17 @@ def MakeTransaction(request):
 
         }
         kafka_producer = KafkaClientHubProducer()
-        kafka_producer.send_successfull_event(msg)
+        kafka_producer.send_requested_transaction(msg)
 
         return JsonResponse({'msg':'Solicitado com sucesso.'}, status=200)
     
     else:
 
         return JsonResponse({'error':'Método não permitido'}, status=405)
+    
+def CreateClientRegister(request):
+
+    kafka_producer = KafkaClientHubProducer()
+    kafka_producer.send_create_user()
+
+    return JsonResponse({'msg':'Solicitado com sucesso criar user.'}, status=200)

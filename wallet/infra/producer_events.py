@@ -16,7 +16,7 @@ class KafkaWalletProducer:
         else:
             print(f'Mensagem entregue em {msg.topic()} [{msg.partition()}]')
 
-    def send_successfull_event(self, _type, transaction_uuid, wallet_id, amount, new_balance):
+    def send_wallet_successfull(self, _type, transaction_uuid, wallet_id, amount, new_balance):
         event = json.dumps({
             'type':_type,
             'transaction_uuid':transaction_uuid,
@@ -30,7 +30,7 @@ class KafkaWalletProducer:
         
         self.producer.poll(0)
 
-    def send_failed_event(self, _type, transaction_uuid, wallet_id, amount, error):
+    def send_wallet_failed(self, _type, transaction_uuid, wallet_id, amount, error):
         event = json.dumps({
             'type':_type,
             'transaction_uuid':transaction_uuid,
@@ -44,3 +44,12 @@ class KafkaWalletProducer:
         
         self.producer.poll(0)
 
+    def send_create_limit(self, wallet_id):
+        event = json.dumps({
+            'wallet_id':wallet_id
+        })
+        self.producer.produce(topic='create_limit',
+                              value=event,
+                              callback=self.callback_delivery)
+        
+        self.producer.poll(0)

@@ -14,7 +14,7 @@ class KafkaClientHubProducer:
         else:
             print(f'Mensagem entregue em {msg.topic()} [{msg.partition()}]')
 
-    def send_successfull_event(self, event):
+    def send_requested_transaction(self, event):
         event = json.dumps({
             'transaction_uuid':event['transaction_uuid'],
             'wallet_id_to_debit':event['wallet_id_to_debit'],
@@ -26,3 +26,8 @@ class KafkaClientHubProducer:
                               callback=self.callback_delivery)
         
         self.producer.poll(0)
+    
+    def send_create_user(self):
+        self.producer.produce(topic='create_wallet',
+                              value={},
+                              callback=self.callback_delivery)

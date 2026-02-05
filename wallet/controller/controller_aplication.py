@@ -1,6 +1,8 @@
 from domain.repositories.wallet_repository import WalletDb
 from application.wallet_application_service import WalletApplicationService
-    
+import uuid
+from infra.producer_events import KafkaWalletProducer
+
 class Controller:
     
     def __init__(self, event):
@@ -11,8 +13,8 @@ class Controller:
     def _run(self):
         
         wallet_db = WalletDb()
-        wallet_to_credit_balance = wallet_db.get_wallet(wallet_id=self.wallet_id_to_credit).balance
-        wallet_to_debit_balance = wallet_db.get_wallet(wallet_id=self.wallet_id_to_credit).balance
+        wallet_to_credit_balance = wallet_db.get_wallet(wallet_id=self.wallet_id_to_credit)['balance']
+        wallet_to_debit_balance = wallet_db.get_wallet(wallet_id=self.wallet_id_to_credit)['balance']
 
         wallet_response = WalletApplicationService(
 
@@ -23,3 +25,16 @@ class Controller:
             transaction_uuid=self.transaction_uuid
             
             ).execute(self.amount)
+
+class CreateWallet:
+
+    def __init__(self):
+        self.wallet_db = WalletDb()
+        self.wallet_uuid = uuid.uuid4()
+    
+    def create(self):
+        self.wallet_db.create_wallet(wallet_id=self.wallet_uuid)
+        self.wallet_db.close()
+
+        kafka_producer = KafkaWalletProducer()
+        kafka_producer.send_create_limit(event={'wallet_id':self.wallet_uuid})

@@ -51,7 +51,7 @@ class CreateLimits:
             daily_limit = self.event['daily_limit']
             monthly_limit = self.event['monthly_limit']
         except:
-            daily_limit = 1000
-            monthly_limit = 30000
+            daily_limit = 1000.00
+            monthly_limit = 30000.00
 
         self.wallet_limit_db = LimitDb.create_limit(wallet_id=self.wallet_id, daily_limit=daily_limit, monthy_limit=monthly_limit)

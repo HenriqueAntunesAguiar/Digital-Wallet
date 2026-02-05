@@ -2,7 +2,7 @@
 # KAFKA FILE CONFIG
 from confluent_kafka import Consumer
 import json
-from controller.controller_aplication import Controller
+from controller.controller_aplication import Controller, CreateWallet
 
 class KafkaWalletConsumer:
 
@@ -11,7 +11,7 @@ class KafkaWalletConsumer:
                 'group.id':'wallet-service',
                 'auto.offset.reset':'earliest'}
         self.consumer = Consumer(conf)
-        self.consumer.subscribe(['limit_approved'])
+        self.consumer.subscribe(['limit_approved', 'create_wallet'])
 
     def _run(self):
 
@@ -28,7 +28,12 @@ class KafkaWalletConsumer:
                 continue
 
             print('Recebido:', json.loads(msg.value().decode('utf-8')))
-            Controller(msg.value)._run()
+
+            if msg.topic == '':
+                Controller(msg.value)._run()
+
+            elif msg.topic == 'create_wallet':
+                CreateWallet.create()
 
 if __name__ == '__main__':
     print('Wallet - executando consumer')

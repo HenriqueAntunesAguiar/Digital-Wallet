@@ -95,3 +95,39 @@ kafka-topics \
   --replication-factor 1
 
 echo "Tópico transaction_failed Criado"
+
+echo "Criando Tópico create_wallet"
+
+kafka-topics \
+  --bootstrap-server kafka:29092 \
+  --create \
+  --if-not-exists \
+  --topic create_wallet \
+  --partitions 1 \
+  --replication-factor 1
+
+echo "Tópico create_wallet Criado"
+
+echo "Criando Tópico update_limit"
+
+kafka-topics \
+  --bootstrap-server kafka:29092 \
+  --create \
+  --if-not-exists \
+  --topic update_limit \
+  --partitions 1 \
+  --replication-factor 1
+
+echo "Tópico update_limit Criado"
+
+echo "Criando Tópico create_limit"
+
+kafka-topics \
+  --bootstrap-server kafka:29092 \
+  --create \
+  --if-not-exists \
+  --topic create_limit \
+  --partitions 1 \
+  --replication-factor 1
+
+echo "Tópico create_limit Criado"

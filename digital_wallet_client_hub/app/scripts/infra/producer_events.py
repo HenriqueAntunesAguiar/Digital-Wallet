@@ -15,12 +15,13 @@ class KafkaClientHubProducer:
             print(f'Mensagem entregue em {msg.topic()} [{msg.partition()}]')
 
     def send_requested_transaction(self, event):
-        event = json.dumps({
+        payload = {
             'transaction_uuid':event['transaction_uuid'],
             'wallet_id_to_debit':event['wallet_id_to_debit'],
             'wallet_id_to_credit':event['wallet_id_to_credit'],
             'amount':event['amount']
-        })
+        }
+        event = json.dumps(payload).encode('utf-8')
         self.producer.produce(topic='transaction_requested',
                               value=event,
                               callback=self.callback_delivery)

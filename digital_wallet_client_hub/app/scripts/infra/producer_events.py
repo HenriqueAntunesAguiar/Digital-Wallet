@@ -29,5 +29,5 @@ class KafkaClientHubProducer:
     
     def send_create_user(self):
         self.producer.produce(topic='create_wallet',
-                              value={},
+                              value=json.dumps({}),
                               callback=self.callback_delivery)

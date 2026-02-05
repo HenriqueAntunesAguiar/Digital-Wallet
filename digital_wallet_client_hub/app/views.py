@@ -40,6 +40,7 @@ def MakeTransaction(request):
 
         return JsonResponse({'error':'Método não permitido'}, status=405)
     
+@csrf_exempt
 def CreateClientRegister(request):
 
     kafka_producer = KafkaClientHubProducer()

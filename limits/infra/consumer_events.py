@@ -27,7 +27,7 @@ class KafkaLimitsConsumer:
                 print(msg.error())
                 continue
             
-            print('Recebido:', json.loads(msg.value().decode('utf-8')))
+            print('Recebido:', json.loads(msg.value().decode('utf-8')), 'Tópico:', str(msg.topic))
             
             if msg.topic() == 'transaction_requested':
                 LimitsApplicationService(msg.value).get_check_limits()
